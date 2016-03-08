@@ -21,17 +21,25 @@ createList a = take a [fibonacci x | x <- [2..]]
 
 --I'm honestly not sure how to get the two last elements
 --I can get the first two though because they will always be indexed 0 and 1
---I will generate the list backwards by adding one element at a time at the front
+--I will generate the list backwards by adding one element at a time to the front
 fibStart = [ 2, 1 ]
 
 fibGen x = [ x!!0 + x!!1 ] ++ x
 
 --takeWhile help http://learnyouahaskell.com/higher-order-functions
 
+{--
 --how do I do a list that checks if the newest list begins with a # greater than 4000000
 --I want to iterate until the first element of the most recent list is 4000000
+
 fibList = last ( take 100 (iterate fibGen fibStart) )--gets the last list of the iterate since it has most values
 
-fibDesired = filter even (filter (<4000000) fibList)--filter all values not even and <4M
+--}
+
+fibTo4M x
+    | x!!0 > 4000000 = x
+    | otherwise = fibTo4M( fibGen x )
+
+fibDesired = filter even ( tail( fibTo4M fibStart ) )--filter all values not even and <4M
 
 answer = sum fibDesired
