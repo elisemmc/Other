@@ -1,0 +1,1 @@
+sudo apt-get -y install vim git-all build-essential valgrind fftw libboost-all-dev tmux

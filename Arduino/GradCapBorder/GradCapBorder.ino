@@ -6,8 +6,6 @@
 #define BRIGHTNESS 50
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(144, 5, NEO_GRBW + NEO_KHZ800);
-Adafruit_NeoPixel grid = Adafruit_NeoPixel(64, 6, NEO_GRBW + NEO_KHZ800);
-Adafruit_NeoPixel ring = Adafruit_NeoPixel(24, 7, NEO_GRBW + NEO_KHZ800);
 
 void setup() {
   Serial.begin(115200);
@@ -166,8 +164,4 @@ void simLight()
   }
 }
 
-void potControl()
-{
-  clockwiseWipe( strip.Color( analogRead(A0) >> 2, analogRead(A1) >> 2, analogRead(A2) >> 2 ), 100 );
-}
 
