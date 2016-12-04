@@ -5,13 +5,13 @@
 
 #define PIN 6
 
-#define NUM_LEDS 24
+#define NUM_LEDS 48
 
 #define BRIGHTNESS 50
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
 
-int gamma[] = {
+int g[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
     1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,
@@ -29,27 +29,6 @@ int gamma[] = {
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 };
 
-uint32_t ku2[] = { strip.Color(255, 0, 0), strip.Color(0, 0, 255) };
-uint32_t ku4[] = { strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(0, 0, 255), strip.Color(0, 0, 255) };
-uint32_t ku6[] = { strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255) };
-uint32_t ku8[] = { strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255) };
-uint32_t ku12[] = { strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0)
-                    , strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255) };
-uint32_t ku24[] = { strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0)
-                    , strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0)
-                    , strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255)
-                    , strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 255)
-                  };
-
-uint32_t kuFade24[] = { strip.Color(255, 0, 0),strip.Color(255, 0, 0), strip.Color(127, 0, 0),strip.Color(127, 0, 0)
-                      , strip.Color(63, 0, 0), strip.Color(63, 0, 0), strip.Color(31, 0, 0), strip.Color(31, 0, 0)
-                      , strip.Color(15, 0, 0), strip.Color(15, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)
-                      , strip.Color(0, 0, 255), strip.Color(0, 0, 255), strip.Color(0, 0, 127), strip.Color(0, 0, 127)
-                      , strip.Color(0, 0, 63), strip.Color(0, 0, 63), strip.Color(0, 0, 31), strip.Color(0, 0, 31)
-                      , strip.Color(0, 0, 15), strip.Color(0, 0, 15), strip.Color(0, 0, 0), strip.Color(0, 0, 0)
-                      };
-uint32_t red8[] = { strip.Color(255, 0, 0), strip.Color(127, 0, 0), strip.Color(127, 0, 0), strip.Color(63, 0, 0), strip.Color(63, 0, 0), strip.Color(31, 0, 0), strip.Color(15, 0, 0), strip.Color(0, 0, 0) };
-uint32_t blue8[] = { strip.Color(0, 0, 255), strip.Color(0, 0, 127), strip.Color(0, 0, 127), strip.Color(0, 0, 63), strip.Color(0, 0, 63), strip.Color(0, 0, 31), strip.Color(0, 0, 15), strip.Color(0, 0, 0) };
 
 void setup() {
   Serial.begin(115200);
@@ -64,61 +43,9 @@ void setup() {
 }
 
 void loop() {
-  int i;
-  
-  for( i=0; i<2; i++ )
-    counterclockwiseSpin( kuFade24, 24, 100 );
-
-  for( i=0; i<2; i++ )
-    clockwiseSpin( kuFade24, 24, 100 );
-  
-  for( i=0; i<10; i++ )
-    clockwiseSpin(ku2, 2, 200 );
-
-  for( i=0; i<5; i++ )
-    clockwiseSpin(ku4, 4, 100 );
-
-  for( i=0; i<5; i++ )
-    counterclockwiseSpin(ku4, 4, 100 );
-
-  for( i=0; i<5; i++ )
-    clockwiseSpin(ku6, 6, 100 );
-
-  for( i=0; i<5; i++ )
-    counterclockwiseSpin(ku6, 6, 100 );
-
-  for( i=0; i<5; i++ )
-    clockwiseSpin(ku8, 8, 100 );
-
-  for( i=0; i<5; i++ )
-    counterclockwiseSpin(ku8, 8, 100 );
-
-  for( i=0; i<5; i++ )
-    clockwiseSpin(ku12, 12, 100 );
-
-  for( i=0; i<5; i++ )
-    counterclockwiseSpin(ku12, 12, 100 );
-
-  for( i=0; i<3; i++ )
-    clockwiseSpin(ku24, 24, 100 );
-
-  for( i=0; i<3; i++ )
-    counterclockwiseSpin(ku24, 24, 100 );
-
-  for( i=0; i<10; i++ )
-  {
-    clockwiseSpin( red8, 8, 100 );
-    clockwiseSpin( blue8, 8, 100 );
-  }
-
-  for ( int i = 0; i < 2; i++ )
-  {
-    clockwiseWipe( strip.Color(255, 0, 0), 100 );
-    counterclockwiseWipe( strip.Color(0, 0, 255), 100 );
-  }
-  
   // Some example procedures showing how to display to the pixels:
   colorWipe(strip.Color(255, 0, 0), 50); // Red
+  colorWipe(strip.Color(0, 255, 0), 50); // Green
   colorWipe(strip.Color(0, 0, 255), 50); // Blue
   colorWipe(strip.Color(0, 0, 0, 255), 50); // White
 
@@ -126,56 +53,12 @@ void loop() {
 
   pulseWhite(5); 
 
+  // fullWhite();
+  // delay(2000);
+
   rainbowFade2White(3,3,1);
 
 
-}
-
-void clockwiseSpin( uint32_t colors[], uint8_t colors_size, uint8_t wait )
-{
-  for ( uint16_t j = 0; j < colors_size; j++ )
-  {
-    for ( uint16_t i = 0; i < strip.numPixels(); i++ )
-    {
-      strip.setPixelColor( strip.numPixels() - (i + 1), colors[(j + i) % colors_size] );
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-void counterclockwiseSpin( uint32_t colors[], uint8_t colors_size, uint8_t wait )
-{
-  for ( uint16_t j = 0; j < colors_size; j++ )
-  {
-    for ( uint16_t i = 0; i < strip.numPixels(); i++ )
-    {
-      strip.setPixelColor( i, colors[(j + i) % colors_size] );
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-void clockwiseWipe(uint32_t c, uint8_t wait)
-{
-  for (uint16_t i = 0; i < strip.numPixels(); i++)
-  {
-    strip.setPixelColor(strip.numPixels() - (i + 1), c);
-    strip.show();
-    delay(wait);
-  }
-}
-
-// Fill the dots one after the other with a color
-void counterclockwiseWipe(uint32_t c, uint8_t wait)
-{
-  for (uint16_t i = 0; i < strip.numPixels(); i++)
-  {
-    strip.setPixelColor(i, c);
-    strip.show();
-    delay(wait);
-  }
 }
 
 // Fill the dots one after the other with a color
@@ -190,7 +73,7 @@ void colorWipe(uint32_t c, uint8_t wait) {
 void pulseWhite(uint8_t wait) {
   for(int j = 0; j < 256 ; j++){
       for(uint16_t i=0; i<strip.numPixels(); i++) {
-          strip.setPixelColor(i, strip.Color(0,0,0, gamma[j] ) );
+          strip.setPixelColor(i, strip.Color(0,0,0, g[j] ) );
         }
         delay(wait);
         strip.show();
@@ -198,7 +81,7 @@ void pulseWhite(uint8_t wait) {
 
   for(int j = 255; j >= 0 ; j--){
       for(uint16_t i=0; i<strip.numPixels(); i++) {
-          strip.setPixelColor(i, strip.Color(0,0,0, gamma[j] ) );
+          strip.setPixelColor(i, strip.Color(0,0,0, g[j] ) );
         }
         delay(wait);
         strip.show();
@@ -254,7 +137,7 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
     for(int j = 0; j < 256 ; j++){
 
         for(uint16_t i=0; i < strip.numPixels(); i++) {
-            strip.setPixelColor(i, strip.Color(0,0,0, gamma[j] ) );
+            strip.setPixelColor(i, strip.Color(0,0,0, g[j] ) );
           }
           strip.show();
         }
@@ -263,7 +146,7 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
     for(int j = 255; j >= 0 ; j--){
 
         for(uint16_t i=0; i < strip.numPixels(); i++) {
-            strip.setPixelColor(i, strip.Color(0,0,0, gamma[j] ) );
+            strip.setPixelColor(i, strip.Color(0,0,0, g[j] ) );
           }
           strip.show();
         }
