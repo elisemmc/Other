@@ -1,0 +1,17 @@
+Here's how I went about making a python GUI for arduino
+
+Searched: 
+    python GUI
+Found: 
+    https://wiki.python.org/moin/GuiProgramming
+    //given the simplicity of the desired GUI it's likely any of these will have the ability to display and have buttons
+    //picked TkInter because it's "the most commonly used" so examples will be available
+Led:
+    https://wiki.python.org/moin/TkInter
+
+
+Searched: 
+    arduino serial input python
+Found: 
+    http://playground.arduino.cc/interfacing/python
+    https://github.com/pyserial/pyserial
