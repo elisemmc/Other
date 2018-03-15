@@ -111,7 +111,9 @@ extern uint8_t packetbuffer[];
     uint8_t red = 100;
     uint8_t green = 100;
     uint8_t blue = 100;
+    uint8_t white = 0;
     uint8_t animationState = 1;
+    uint8_t adjustWhite = 0;
 
     int pos = 0, dir = 1; // Position, direction of "eye" for larson scanner animation
 
@@ -125,9 +127,7 @@ void setup(void)
   for(uint8_t i=0; i<NUMPIXELS; i++) {
     pixel.setPixelColor(i, pixel.Color(0,0,0)); // off
   }
-  colorWipe(pixel.Color(100, 100, 100), 20); // do a quick colorWipe to show that the pixels are all working, even before Bluefruit connection established
-  colorWipe(pixel.Color(0, 0, 0), 20); 
-  pixel.show();
+  colorWipe(20); // do a quick colorWipe to show that the pixels are all working, even before Bluefruit connection established
 
   Serial.begin(115200);
   Serial.println(F("Adafruit Bluefruit Neopixel Color Picker Example"));
@@ -205,12 +205,6 @@ void loop(void)
     Serial.print(green, HEX);
     if (blue < 0x10) Serial.print("0");
     Serial.println(blue, HEX);
-
-// this part colors ALL the pixels according to the app's color picker:
-//    for(uint8_t i=0; i<NUMPIXELS; i++) {
-//      pixel.setPixelColor(i, pixel.Color(red,green,blue));
-//   }
-//    pixel.show(); // This sends the updated pixel color to the hardware.
   }
 
   // Buttons
@@ -219,55 +213,81 @@ void loop(void)
     uint8_t buttnum = packetbuffer[2] - '0';
     boolean pressed = packetbuffer[3] - '0';
     Serial.print ("Button "); Serial.print(buttnum);
-    animationState = buttnum;
+    if( buttnum <= 4 ){
+      animationState = buttnum;
+    }
     if (pressed) {
       Serial.println(" pressed");
+      if (buttnum == 5){
+        Serial.println(buttnum);
+        adjustWhite = 1; // increase brightness
+      }
+      if (buttnum == 6){
+        Serial.println(buttnum);
+        adjustWhite = 2; // increase brightness
+      }
     } else {
       Serial.println(" released");
+      if (buttnum == 5 || buttnum == 6){
+        adjustWhite = 0;
+      }
     }
+  }
+
+  if (adjustWhite == 1 && white<255){
+    white++;
+    Serial.print("White value "); Serial.println(white);
+  }
+
+  if (adjustWhite == 2 && white>0){
+    white--;
+    Serial.print("White value "); Serial.println(white);
   }
     
   if (animationState == 1){ // button labeled "1" in control pad
-    for(uint16_t i=0; i<pixel.numPixels(); i++) { //clear all pixels before displaying new animation
-          pixel.setPixelColor(i, pixel.Color(red,green,blue));
-        }
-     //flashRandom(5,random(10,30));
-     pixel.show(); // This sends the updated pixel color to the hardware.
-   }
+      colorSolid();
+  }
   
   if (animationState == 2){ // button labeled "2" in control pad
-    for(uint16_t i=0; i<pixel.numPixels(); i++) { //clear all pixels before displaying new animation
-          pixel.setPixelColor(i, pixel.Color(0,0,0));
-        }
-    colorWipe(pixel.Color(red, green, blue), 20);
-    pixel.show(); // This sends the updated pixel color to the hardware.
-    colorWipe(pixel.Color(0, 0, 0), 20);
-    pixel.show();
+    colorWipe(20);
   }
 
   if (animationState == 3){ // button labeled "3" in control pad
-    for(uint16_t i=0; i<pixel.numPixels(); i++) { //clear all pixels before displaying new animation
-          pixel.setPixelColor(i, pixel.Color(0,0,0));
-        }
+    clearPixels();
     larsonScanner(30); // larsonScanner is set to red and does not take color input.
-    pixel.show(); // This sends the updated pixel color to the hardware.
   }
   
   if (animationState == 4){ // button labeled "4" in control pad
-    for(uint16_t i=0; i<pixel.numPixels(); i++) { //clear all pixels before displaying new animation
-          pixel.setPixelColor(i, pixel.Color(0,0,0));
-        }
-    rainbowCycle(20);
-    pixel.show(); // This sends the updated pixel color to the hardware.
+    clearPixels();
+    rainbow(20);
   }
 
 }
 
+// clears all pixels
+void clearPixels(){
+  for(uint16_t i=0; i<pixel.numPixels(); i++) { //clear all pixels before displaying new animation
+    pixel.setPixelColor(i, pixel.Color(0,0,0));
+  }
+}
+
+// this part colors ALL the pixels according to the app's color picker
+void colorSolid(){
+    for(uint8_t i=0; i<NUMPIXELS; i++) {
+      pixel.setPixelColor(i,red,green,blue,white);
+   }
+    pixel.show(); // This sends the updated pixel color to the hardware.
+}
 
 // Fill the dots one after the other with a color
-void colorWipe(uint32_t c, uint8_t wait) {
+void colorWipe(uint8_t wait) {
   for(uint16_t i=0; i<pixel.numPixels(); i++) {
-      pixel.setPixelColor(i, c);
+      pixel.setPixelColor(i, red, green, blue, white);
+      pixel.show();
+      delay(wait);
+  }
+    for(uint16_t i=0; i<pixel.numPixels(); i++) {
+      pixel.setPixelColor(i, 0, 0, 0, 0);
       pixel.show();
       delay(wait);
   }
